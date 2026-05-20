@@ -12,33 +12,33 @@ async function hashPassword(plainPassword) {
 
 router.post('/user/register', async (req,res) => {
     const body=req.body;
-    if(!body) return; // Sorry error occured message
+    if(!body) return res.status(404).json({error: "Error occured"}); // Sorry error occured message
     const found=await user.findOne({ email: body.email });
-    if(found) return ;// Display message that user exists
+    if(found) return res.status(404).json({error: "Error occured"});// Display message that user exists
     const hashedPassword=await hashPassword(body.password);
     const newUser=await user.create({
         name: body.name,
         email: body.email,
         password: hashedPassword,
     })
-    return res.end("User Created Successfully");
+    return res.status(200).json({msg: "User Created Successfully"});
     //Here redirect to sign in page
 });
 
 router.post('/user/signin', async (req,res) => {
     const body=req.body;
-    if(!body) return ;// Sorry error occured message
+    if(!body) return res.status(404).json({error: "Error occured"});// Sorry error occured message
     const found=await user.findOne({ email:body.email});
-    if(!found) return ;// Display message that user does not exists
+    if(!found) return res.status(404).json({error: "Error occured"});// Display message that user does not exists
     else{
         const isMatch = await bcrypt.compare(body.password, found.password);
         if(!isMatch){
-            return; // Display incorrect password
+            return res.status(404).json({error: "Error occured"}); // Display incorrect password
         }
     }
     const token=setUser(found);
     res.cookie("token",token);
-    return res.send("User Logged In");
+    return res.status(200).json({msg: "User Logged In"});
     // now return statement to home page
 
 })
