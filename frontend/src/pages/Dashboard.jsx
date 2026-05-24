@@ -206,6 +206,21 @@ function Dashboard() {
     URL.revokeObjectURL(url);
   };
 
+  const getDifficultyStyle = (level) => {
+    switch (level) {
+      case 'Easy':
+        return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+      case 'Medium':
+        return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
+      case 'Hard':
+        return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
+      case 'Damn Hard!':
+        return 'bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/50 shadow-[0_0_10px_rgba(217,70,239,0.2)] font-bold';
+      default:
+        return 'bg-gray-500/10 text-gray-400 border-gray-500/20';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0d1117] text-white p-4 md:p-8 font-sans">
 
@@ -340,7 +355,7 @@ function Dashboard() {
                       </td>
 
                       <td className="p-4">
-                        <span className="px-2.5 py-1 text-xs rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <span className={`px-2.5 py-1 text-xs rounded-full border ${getDifficultyStyle(prob.difficulty)}`}>
                           {prob.difficulty}
                         </span>
                       </td>
