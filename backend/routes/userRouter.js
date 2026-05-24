@@ -37,7 +37,12 @@ router.post('/user/signin', async (req,res) => {
         }
     }
     const token=setUser(found);
-    res.cookie("token",token);
+    res.cookie("token",token,{
+        httpOnly: true,
+        secure: true,        
+        sameSite: 'none',    
+        maxAge: 24 * 60 * 60 * 1000 
+    });
     return res.status(200).json({msg: "User Logged In"});
     // now return statement to home page
 
@@ -57,7 +62,11 @@ router.get('/user/verify', async(req,res) => {
 })
 
 router.post('/user/logout', (req,res) => {
-    res.clearCookie();
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none'
+    });
     return res.status(200).json({msg: "Logged out Successfully!!"});
 })
 
