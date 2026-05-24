@@ -30,4 +30,6 @@ app.use('/api',userRouter);
 
 app.use('/problem',checkforAuthentication,problemRouter);
 
-app.listen(PORT,() => console.log(`Server Running at Port ${PORT}`));
+app.listen(8000, '127.0.0.1', () => {
+    console.log("Server is running on port 8000");
+});

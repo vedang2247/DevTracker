@@ -3,11 +3,11 @@ const mongoose=require("mongoose");
 const problemSchema=new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     difficulty: {
         type: String,
-        enum: ["easy","medium","hard","damn hard!"],
+        enum: ["Easy","Medium","Hard","Damn Hard!"],
         required: true
     },
     status: {

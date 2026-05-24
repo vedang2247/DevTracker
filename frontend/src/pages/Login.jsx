@@ -1,18 +1,19 @@
 import '../index.css'
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/user/signin', {
+            const response = await fetch('http://localhost:8000/api/user/signin', {
                 method: 'POST',
                 body: JSON.stringify({
                     email,
@@ -29,6 +30,7 @@ function Login() {
                 setError("Wrong Username or Password!!");
                 return;
             }
+            setIsAuthenticated(true);
             navigate('/dashboard');
         }
         catch (err) {

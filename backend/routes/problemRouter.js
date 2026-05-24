@@ -4,42 +4,54 @@ const router=express.Router();
 
 router.get('/', async (req,res) => {
     const id=req.user._id;
+    if(!id) return res.status(404).json({error: "Error occured"});
     const allProblems=await problem.find({ createdBy: id });
-    return res.send(allProblems);
+    return res.json(allProblems);
 })
 
 router.post('/create', async (req,res) => {
     const body=req.body;
-    if(!body) return ;
+    console.log("The user is:" ,req.user);
+    if(!body) return res.status(404).json({error: "Error occured"});
+    const exists= await problem.findOne({ 
+        name: body.name,
+        difficulty: body.difficulty,
+        createdBy: req.user._id,
+        category: body.category
+    });
+    if(exists) return res.status(200).json({msg: "Problem Already Exists", problem: exists, exists: 1})
     const newProblem = await problem.create({
         name: body.name,
         difficulty: body.difficulty,
         createdBy: req.user._id,
         category: body.category,
+        status: false
     });
-    return res.send("Problem Created SUccessfully");
+    return res.status(200).json({msg: "Problem Created SUccessfully", problem:newProblem, exists: 0});
 });
 
 router.patch('/update/:id', async(req,res) => {
     const id=req.params.id;
     const body=req.body;
-    if(!body) return ;
+    if(!body) return res.status(404).json({error: "Error occured"});
     const problemFound=await problem.findById(id);
-    if(!problemFound) return ;// Invalid URL and no problem exists
+    if(!problemFound) return res.status(404).json({error: "Error occured"});// Invalid URL and no problem exists
     const updatedProblem= await problemFound.updateOne({
         name: (body.name) ? body.name : problemFound.name,
         difficulty: (body.difficulty) ? body.difficulty : problemFound.difficulty,
         category: (body.category) ? body.category : problemFound.category,
+        status: !problemFound.status,
     });
-    return ;
+    return res.status(200).json({msg: "Problem Patched SUccessfully"});
 })
 
 router.delete('/delete/:id', async (req,res) => {
     const id=req.params.id;
+    if(!id) return res.status(404).json({error: "Error occured"});
     const problemFound=await problem.findById(id);
-    if(!problemFound) return ;
+    if(!problemFound) return res.status(404).json({error: "Error occured"});
     const deleteOp=await problem.findByIdAndDelete(id);
-    return ;
+    return res.status(200).json({msg: "Problem Deleted SUccessfully"});
 })
 
 

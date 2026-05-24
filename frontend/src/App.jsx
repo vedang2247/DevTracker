@@ -1,16 +1,38 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Log from './pages/Login';
 import Reg from './pages/Register';
+import Dash from './pages/Dashboard';
+import { AuthContext } from './context/AuthContext';
+import {useContext, useEffect} from 'react'
+
 
 const Login = () => <Log />;
 const Register = () => <Reg />;
-const Dashboard = () => <div className="p-10 text-center text-2xl text-emerald-400">Dashboard (Protected!)</div>;
+const Dashboard = () => <Dash />;
 
 
-function App() {
+function App() { 
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const {isLoading,setIsLoading}=useContext(AuthContext)
+  useEffect( () => {
+    const verify= async() => {
+        try{
+          const response = await fetch('http://localhost:8000/api/user/verify',{
+            credentials: 'include'
+          })
+          if(response.ok){
+            setIsAuthenticated(true)
+          }
+        }
+        catch(err){
+          console.error("Could not Authenticate: ",err);
+        }
+        setIsLoading(false);
+    }
+    verify();
+  },[]);
 
-  const isAuthenticated = false; 
-
+  if(isLoading) return (<div>Loading...</div>);
   return (
     <BrowserRouter>
       <Routes>

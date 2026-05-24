@@ -43,4 +43,22 @@ router.post('/user/signin', async (req,res) => {
 
 })
 
+router.get('/user/verify', async(req,res) => {
+    const tokenCookie=req.cookies.token;
+    const authHeader = req.headers['authorization'];
+    let token = null;
+    if (tokenCookie) {
+        token = tokenCookie;
+    } else if (authHeader && authHeader.startsWith("Bearer")) {
+        token = authHeader.split("Bearer ")[1];
+    }
+    if(token) return res.status(200).json({msg: "Let User Go In"});
+    return res.status(404).json({msg: "User Not Logged In!"});
+})
+
+router.post('/user/logout', (req,res) => {
+    res.clearCookie();
+    return res.status(200).json({msg: "Logged out Successfully!!"});
+})
+
 module.exports=router;
