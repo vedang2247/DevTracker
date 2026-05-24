@@ -8,11 +8,12 @@ function Register() {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [error, setError] = useState('');
-    const navigate=useNavigate();
+    const navigate = useNavigate();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/user/register', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/register`, {
                 method: 'POST',
                 body: JSON.stringify({
                     name,
@@ -36,6 +37,7 @@ function Register() {
             setError('Unable to connect to Database!')
         }
     }
+
     return (
         <div className="min-h-screen bg-[#0d1117] flex flex-col items-center justify-center p-4 relative overflow-hidden"
             style={{ backgroundImage: 'radial-gradient(circle at center, #1f2937 0%, transparent 100%)', backgroundSize: '40px 40px' }}>
@@ -57,12 +59,7 @@ function Register() {
                     <p className="text-gray-400 text-sm">Start tracking problems in seconds.</p>
                 </div>
 
-                {/* Attach your onSubmit handler here */}
                 <form className="space-y-5" onSubmit={handleSubmit}>
-
-                    {/* --- ERROR MESSAGE BOX --- */}
-                    {/* Make sure to add your conditional {error && (...)} block here just like the Login page! */}
-                    {/* ------------------------- */}
 
                     {/* Display Name Input */}
                     <div className="space-y-1">
@@ -103,6 +100,7 @@ function Register() {
                             minLength="8"
                         />
                     </div>
+
                     {error && (
                         <div className="bg-rose-500/10 border border-rose-500/50 text-rose-400 px-4 py-3 rounded-lg text-sm text-center">
                             {error}
@@ -112,24 +110,10 @@ function Register() {
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full bg-[#818cf8] hover:bg-[#6366f1] text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 mt-2"
+                        className="w-full bg-[#818cf8] hover:bg-[#6366f1] text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 mt-2 shadow-lg shadow-indigo-500/20"
                     >
                         Create account
                         <span className="text-lg">→</span>
-                    </button>
-
-                    {/* Divider */}
-                    <div className="relative flex items-center justify-center py-4">
-                        <div className="absolute border-t border-gray-800 w-full"></div>
-                        <span className="bg-[#161b22] px-3 text-xs text-gray-500 relative uppercase tracking-wider">or</span>
-                    </div>
-
-                    {/* Google Button */}
-                    <button
-                        type="button"
-                        className="w-full bg-[#1c2128] hover:bg-[#22272e] border border-gray-700 text-white font-medium py-2.5 rounded-lg transition-colors"
-                    >
-                        Continue with Google
                     </button>
 
                     <p className="text-center text-xs text-gray-500 mt-4">
@@ -140,7 +124,7 @@ function Register() {
 
             {/* Footer Link */}
             <p className="mt-8 text-sm text-gray-500 z-10">
-                Already have an account? <a href="/login" className="text-[#818cf8] hover:text-[#6366f1] hover:underline">Sign in</a>
+                Already have an account? <a href="/login" className="text-[#818cf8] hover:text-[#6366f1] hover:underline transition-colors">Sign in</a>
             </p>
         </div>
     );

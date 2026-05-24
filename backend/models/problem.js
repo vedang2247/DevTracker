@@ -26,6 +26,14 @@ const problemSchema=new mongoose.Schema({
     bookmark: {
         type: Boolean,
         default: false
+    },
+    notes: {
+        type: String,
+        default: ""
+    },
+    link: {
+        type: String,
+        default:""
     }
 })
 

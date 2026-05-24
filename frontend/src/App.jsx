@@ -4,6 +4,7 @@ import Reg from './pages/Register';
 import Dash from './pages/Dashboard';
 import { AuthContext } from './context/AuthContext';
 import {useContext, useEffect} from 'react'
+import Loader from './pages/Loader';
 
 
 const Login = () => <Log />;
@@ -32,7 +33,7 @@ function App() {
     verify();
   },[]);
 
-  if(isLoading) return (<div>Loading...</div>);
+  if(isLoading) return (<Loader />);
   return (
     <BrowserRouter>
       <Routes>

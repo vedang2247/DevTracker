@@ -25,7 +25,9 @@ router.post('/create', async (req,res) => {
         difficulty: body.difficulty,
         createdBy: req.user._id,
         category: body.category,
-        status: false
+        status: false,
+        bookmark: false,
+        link: body.link
     });
     return res.status(200).json({msg: "Problem Created SUccessfully", problem:newProblem, exists: 0});
 });
@@ -54,5 +56,28 @@ router.delete('/delete/:id', async (req,res) => {
     return res.status(200).json({msg: "Problem Deleted SUccessfully"});
 })
 
+router.post('/note/:id', async (req,res) =>{
+    const id=req.params.id;
+    const body = req.body;
+    if(!body) return res.status(404).json({msg: "Not able to Fetch Body"})
+    const requiredProblem=await problem.findById(id);
+    if(!requiredProblem) return res.status(404).json({msg: "Problem Does Not Exist!"});
+    const updatedProblem=await requiredProblem.updateOne({
+        notes: body.notes
+    });
+    return res.status(200).json({msg: "Notes Added Successfully!"});
+})
+
+router.patch('/bookmark/:id', async (req,res) => {
+    const id=req.params.id;
+    const body=req.body;
+    if(!body) return res.status(404).json({error: "Error occured"});
+    const problemFound=await problem.findById(id);
+    if(!problemFound) return res.status(404).json({error: "Error occured"});// Invalid URL and no problem exists
+    const updatedProblem= await problemFound.updateOne({
+        bookmark: !problemFound.bookmark
+    });
+    return res.status(200).json({msg: "Problem Patched SUccessfully"});
+})
 
 module.exports=router;

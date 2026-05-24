@@ -1,5 +1,5 @@
 import '../index.css'
-import { useState,useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
@@ -13,14 +13,14 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8000/api/user/signin', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/signin`, {
                 method: 'POST',
                 body: JSON.stringify({
                     email,
                     password
                 }),
                 headers: {
-                    'Content-Type': 'application/json' // <-- ADD THIS
+                    'Content-Type': 'application/json' 
                 },
                 credentials: 'include'
             })
@@ -59,12 +59,10 @@ function Login() {
                     <p className="text-gray-400 text-sm">Sign in to keep grinding.</p>
                 </div>
 
-                {/* Form - You need an onSubmit handler here */}
                 <form className="space-y-5" onSubmit={handleSubmit}>
                     {/* Email Input */}
                     <div className="space-y-1">
                         <label className="text-sm font-medium text-gray-300 block">Email</label>
-                        {/* You need value and onChange bindings here */}
                         <input
                             type="email"
                             value={email}
@@ -77,11 +75,7 @@ function Login() {
 
                     {/* Password Input */}
                     <div className="space-y-1">
-                        <div className="flex items-center justify-between">
-                            <label className="text-sm font-medium text-gray-300">Password</label>
-                            <a href="#" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">Forgot?</a>
-                        </div>
-                        {/* You need value and onChange bindings here */}
+                        <label className="text-sm font-medium text-gray-300 block">Password</label>
                         <input
                             type="password"
                             value={password}
@@ -92,38 +86,26 @@ function Login() {
                         />
                     </div>
 
-                    {/* Submit Button */}
-                    <button
-                        type="submit"
-                        className="w-full bg-[#818cf8] hover:bg-[#6366f1] text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 mt-2"
-                    >
-                        Sign in
-                        <span className="text-lg">→</span>
-                    </button>
                     {error && (
                         <div className="bg-rose-500/10 border border-rose-500/50 text-rose-400 px-4 py-3 rounded-lg text-sm text-center">
                             {error}
                         </div>
                     )}
-                    {/* Divider */}
-                    <div className="relative flex items-center justify-center py-4">
-                        <div className="absolute border-t border-gray-800 w-full"></div>
-                        <span className="bg-[#161b22] px-3 text-xs text-gray-500 relative uppercase tracking-wider">or</span>
-                    </div>
 
-                    {/* Google Button (Visual only for now) */}
+                    {/* Submit Button */}
                     <button
-                        type="button"
-                        className="w-full bg-[#1c2128] hover:bg-[#22272e] border border-gray-700 text-white font-medium py-2.5 rounded-lg transition-colors"
+                        type="submit"
+                        className="w-full bg-[#818cf8] hover:bg-[#6366f1] text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 mt-2 shadow-lg shadow-indigo-500/20"
                     >
-                        Continue with Google
+                        Sign in
+                        <span className="text-lg">→</span>
                     </button>
                 </form>
             </div>
 
             {/* Footer Link */}
             <p className="mt-8 text-sm text-gray-500 z-10">
-                New here? <a href="/register" className="text-[#818cf8] hover:text-[#6366f1] hover:underline">Create an account</a>
+                New here? <a href="/register" className="text-[#818cf8] hover:text-[#6366f1] hover:underline transition-colors">Create an account</a>
             </p>
         </div>
     );
